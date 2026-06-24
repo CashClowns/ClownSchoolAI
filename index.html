@@ -1111,9 +1111,9 @@ Generate one high-quality MD-102 exam question.`;
     size: 6 + Math.random() * 6, rot: Math.random() * 360
   })), [examState === "results" && examPassed]);
 
-  const TABS = [["dashboard","Home",LayoutDashboard],["quiz","Practice",Zap],["review","Review",RotateCw],["cards","Cards",Layers],["history","Stats",BarChart3],["exam","Exam",Target]];
+  const TABS = [["dashboard","Home",LayoutDashboard],["quiz","Practice",Zap],["review","Review",RotateCw],["cards","Cards",Layers],["labs","Labs",Terminal],["history","Stats",BarChart3],["exam","Exam",Target]];
   const contentMax = desktop ? (view === "dashboard" ? 1180 : view === "history" ? 920 : 800) : 680;
-  const contentPad = desktop ? "30px 40px 64px" : "20px 16px calc(96px + env(safe-area-inset-bottom))";
+  const contentPad = desktop ? "30px 40px 64px" : "20px 16px calc(112px + env(safe-area-inset-bottom))";
 
   return (
     React.createElement('div', { style: { minHeight: "100dvh", background: C.bg, color: C.textPrimary, fontFamily: "'Manrope',system-ui,sans-serif", paddingBottom: 0, paddingLeft: desktop ? 250 : 0, position: "relative", overflow: "hidden", "--bhi": C.borderHi },}
@@ -1196,7 +1196,7 @@ Generate one high-quality MD-102 exam question.`;
             React.createElement('button', { key: v, className: "md-tab", onClick: () => setView(v), style: {
               flex: 1, padding: "9px 2px 8px", background: "none", border: "none", cursor: "pointer", minHeight: 52,
               display: "flex", flexDirection: "column", alignItems: "center", gap: 3, position: "relative",
-              color: active ? accent : C.textSec, fontWeight: active ? 700 : 500, fontSize: 10.5
+              color: active ? accent : C.textSec, fontWeight: active ? 700 : 500, fontSize: 9.5
             },}
               , active && React.createElement('div', { style: { position: "absolute", top: 4, width: 40, height: 28, borderRadius: 10, background: `${accent}22`, boxShadow: `0 0 16px ${accent}55`, animation: "popIn .35s cubic-bezier(.34,1.56,.64,1) both", zIndex: 0 },} )
               , React.createElement(Icon, { size: 18, strokeWidth: active ? 2.5 : 2, style: { position: "relative", zIndex: 1, transform: active ? "translateY(-1px) scale(1.08)" : "none", transition: "transform .25s cubic-bezier(.34,1.56,.64,1)", filter: active ? `drop-shadow(0 0 6px ${accent})` : "none" },} )
