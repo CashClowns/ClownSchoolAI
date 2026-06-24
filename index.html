@@ -236,55 +236,246 @@ const scoreColor = (pct) => (pct === null || pct === undefined) ? C.textMuted : 
 const scoreColorDirect = (s) => s >= 700 ? C.correct : s >= 500 ? C.warning : C.wrong;
 
 const CSS = `
-@keyframes fadeUp { from { opacity:1; transform:translateY(13px) } to { opacity:1; transform:none } }
-@keyframes viewIn { 0% { opacity:1; transform:translateY(14px) } 100% { opacity:1; transform:none } }
-@keyframes scaleIn { from { opacity:0; transform:scale(.94) } to { opacity:1; transform:scale(1) } }
-@keyframes popIn { 0% { opacity:0; transform:scale(.7) } 60% { opacity:1; transform:scale(1.08) } 100% { transform:scale(1) } }
-@keyframes pulseDim { 0%,100% { opacity:1 } 50% { opacity:.35 } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px) scale(.97); filter:blur(4px) } to { opacity:1; transform:none; filter:none } }
+@keyframes viewIn { 0% { opacity:0; transform:translateY(22px) scale(.96); filter:blur(6px) } 100% { opacity:1; transform:none; filter:none } }
+@keyframes scaleIn { from { opacity:0; transform:scale(.86); filter:blur(3px) } to { opacity:1; transform:scale(1); filter:none } }
+@keyframes popIn { 0% { opacity:0; transform:scale(.55) } 55% { opacity:1; transform:scale(1.12) } 80% { transform:scale(.96) } 100% { transform:scale(1) } }
+@keyframes pulseDim { 0%,100% { opacity:1 } 50% { opacity:.32 } }
 @keyframes spin { to { transform:rotate(360deg) } }
 @keyframes conicSpin { to { transform:translate(-50%,-50%) rotate(360deg) } }
-@keyframes floatGlow { 0%,100% { opacity:.5; transform:translate(-50%,0) scale(1) } 50% { opacity:.8; transform:translate(-50%,-12px) scale(1.06) } }
+@keyframes floatGlow { 0%,100% { opacity:.55; transform:translate(-50%,0) scale(1) } 50% { opacity:.9; transform:translate(-50%,-15px) scale(1.1) } }
 @keyframes confettiFall { 0% { transform:translateY(-20px) rotate(0); opacity:1 } 100% { transform:translateY(560px) rotate(540deg); opacity:0 } }
 @keyframes shimmer { 0% { background-position:-200% 0 } 100% { background-position:200% 0 } }
 @keyframes gradientShift { 0% { background-position:0% 50% } 100% { background-position:200% 50% } }
-@keyframes auroraA { 0%,100% { transform:translate(-12%,-8%) scale(1) } 50% { transform:translate(10%,14%) scale(1.28) } }
-@keyframes auroraB { 0%,100% { transform:translate(14%,6%) scale(1.12) } 50% { transform:translate(-12%,-12%) scale(.88) } }
-@keyframes auroraC { 0%,100% { transform:translate(0,12%) scale(1) } 50% { transform:translate(10%,-10%) scale(1.2) } }
-@keyframes glowPulse { 0%,100% { opacity:.45 } 50% { opacity:.95 } }
-@keyframes breathe { 0%,100% { transform:scale(1) } 50% { transform:scale(1.05) } }
-@keyframes flameFlicker { 0%,100% { transform:scale(1) rotate(-3deg) } 50% { transform:scale(1.18) rotate(3deg) } }
-@keyframes sheen { 0% { transform:translateX(-130%) skewX(-18deg) } 60%,100% { transform:translateX(240%) skewX(-18deg) } }
-@keyframes floaty { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-6px) } }
-@keyframes popGlow { 0% { box-shadow:0 0 0 0 var(--pg,rgba(255,45,120,.5)) } 100% { box-shadow:0 0 0 14px transparent } }
+@keyframes glowPulse { 0%,100% { opacity:.4 } 50% { opacity:1 } }
+@keyframes breathe { 0%,100% { transform:scale(1) } 50% { transform:scale(1.06) } }
+@keyframes flameFlicker { 0%,100% { transform:scale(1) rotate(-3deg) } 50% { transform:scale(1.2) rotate(3deg) } }
+@keyframes sheen { 0% { transform:translateX(-140%) skewX(-18deg) } 60%,100% { transform:translateX(260%) skewX(-18deg) } }
+@keyframes floaty { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-8px) } }
+@keyframes popGlow { 0% { box-shadow:0 0 0 0 var(--pg,rgba(255,45,120,.6)) } 100% { box-shadow:0 0 0 18px transparent } }
+@keyframes shake { 0%,100% { transform:translateX(0) } 15% { transform:translateX(-8px) rotate(-.5deg) } 30% { transform:translateX(8px) rotate(.5deg) } 45% { transform:translateX(-6px) } 60% { transform:translateX(6px) } 75% { transform:translateX(-3px) } 90% { transform:translateX(3px) } }
+@keyframes correctBounce { 0% { transform:scale(1) } 25% { transform:scale(1.055) } 55% { transform:scale(.975) } 80% { transform:scale(1.018) } 100% { transform:scale(1) } }
+@keyframes barSweep { 0% { transform:translateX(-130%) } 100% { transform:translateX(130%) } }
+@keyframes pillSlide { from { opacity:.5; transform:scaleX(.8) } to { opacity:1; transform:scaleX(1) } }
+@keyframes iconPop { 0% { transform:scale(.72) translateY(3px) } 58% { transform:scale(1.2) translateY(-2px) } 100% { transform:scale(1.08) translateY(-1px) } }
+@keyframes neonPulse { 0%,100% { opacity:.7 } 50% { opacity:1; filter:drop-shadow(0 0 12px var(--nc,#FF2D78)) } }
+@keyframes haloRipple { 0% { transform:translate(-50%,-50%) scale(.85); opacity:.85 } 100% { transform:translate(-50%,-50%) scale(1.6); opacity:0 } }
 
-.md-card { position:relative; transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .3s, background .3s; }
-.md-card:hover { transform: translateY(-4px); border-color: var(--bhi) !important; box-shadow: 0 16px 44px rgba(0,0,0,.5), 0 0 0 1px var(--bhi); }
-.md-btn { position:relative; overflow:hidden; transition: transform .14s cubic-bezier(.34,1.56,.64,1), filter .2s, background .2s, border-color .2s, box-shadow .2s; }
-.md-btn:hover { filter: brightness(1.12); }
-.md-btn:active { transform: scale(.95); }
-.md-btn::after { content:""; position:absolute; top:0; left:0; width:42%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.30),transparent); transform:translateX(-150%) skewX(-18deg); pointer-events:none; opacity:0; }
-.md-btn:hover::after { opacity:1; animation: sheen .8s ease forwards; }
-.md-opt { position:relative; transition: transform .16s cubic-bezier(.34,1.56,.64,1), border-color .2s, background .2s, box-shadow .2s; }
-.md-opt:hover:not(:disabled) { transform: translateX(4px); box-shadow:-3px 0 0 0 var(--bhi); }
-.md-tab { transition: color .25s, transform .2s cubic-bezier(.34,1.56,.64,1); position: relative; }
-.md-tab:active { transform: scale(.88); }
-.flip-card { perspective: 1600px; }
-.flip-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.3,1.4,.5,1); }
-.flip-inner.flipped { transform: rotateY(180deg); }
-.flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; box-shadow:0 20px 54px rgba(0,0,0,.55); }
-.flip-back { transform: rotateY(180deg); }
-.brand-anim { background-size:220% auto !important; animation: gradientShift 5s linear infinite; }
+.md-card {
+  position:relative; isolation:isolate;
+  transition:transform .38s cubic-bezier(.22,1,.36,1), border-color .32s, box-shadow .38s, background .3s;
+  will-change:transform;
+}
+.md-card::before {
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%);
+  opacity:0; transition:opacity .32s;
+}
+.md-card:hover::before { opacity:1; }
+.md-card:hover {
+  transform:translateY(-6px) scale(1.013);
+  border-color:rgba(255,255,255,.22) !important;
+  box-shadow:0 26px 72px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.13),0 0 55px rgba(255,45,120,.08);
+}
+.md-btn {
+  position:relative; overflow:hidden;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1), filter .18s, background .2s, border-color .2s, box-shadow .25s;
+}
+.md-btn:hover { filter:brightness(1.16); }
+.md-btn:active { transform:scale(.93) !important; filter:brightness(.9); }
+.md-btn::after {
+  content:""; position:absolute; top:0; left:0; width:48%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.36),transparent);
+  transform:translateX(-160%) skewX(-18deg); pointer-events:none; opacity:0;
+}
+.md-btn:hover::after { opacity:1; animation:sheen .7s ease forwards; }
+.md-opt {
+  position:relative; overflow:hidden;
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1), border-color .2s, background .22s, box-shadow .22s;
+}
+.md-opt:hover:not(:disabled) { transform:translateX(6px); box-shadow:-4px 0 0 0 rgba(255,255,255,.2); }
+.md-opt.shake { animation:shake .48s cubic-bezier(.36,.07,.19,.97) both; }
+.md-opt.correct-pop { animation:correctBounce .45s cubic-bezier(.34,1.56,.64,1) both; }
+.md-tab { transition:color .28s ease, transform .22s cubic-bezier(.34,1.56,.64,1); position:relative; }
+.md-tab:active { transform:scale(.82); }
+.flip-card { perspective:2000px; }
+.flip-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .78s cubic-bezier(.22,1.4,.5,.95); }
+.flip-inner.flipped { transform:rotateY(180deg); }
+.flip-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; box-shadow:0 28px 72px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.07); }
+.flip-back { transform:rotateY(180deg); }
+.brand-anim { background-size:240% auto !important; animation:gradientShift 4s linear infinite; font-family:'Space Grotesk','Manrope',sans-serif !important; }
 .aurora { position:fixed; inset:-25% -25% auto -25%; height:135vh; z-index:0; pointer-events:none; overflow:hidden; }
 .aurora i { position:absolute; border-radius:50%; filter:blur(70px); display:block; mix-blend-mode:screen; }
-.ring-halo { position:absolute; top:50%; left:50%; width:172%; height:172%; transform:translate(-50%,-50%); border-radius:50%; background:conic-gradient(from 0deg, transparent 0deg, var(--halo,#FF2D78) 90deg, transparent 220deg); animation: conicSpin 7s linear infinite, glowPulse 4s ease-in-out infinite; filter:blur(13px); pointer-events:none; z-index:0; }
-@keyframes barSweep { 0% { transform:translateX(-130%) } 100% { transform:translateX(130%) } }
-.bar-shim { animation: barSweep 2.6s ease-in-out infinite; }
-.tabrow::-webkit-scrollbar { display: none; }
-* { -webkit-tap-highlight-color: transparent; }
-.csnum{font-family:'Space Grotesk','Manrope',sans-serif;font-feature-settings:"tnum";letter-spacing:-.5px}
-.brand-anim{font-family:'Space Grotesk','Manrope',sans-serif !important}
-@media (prefers-reduced-motion: reduce) { *,*::after,*::before { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important } }
+.ring-halo { position:absolute; top:50%; left:50%; width:188%; height:188%; transform:translate(-50%,-50%); border-radius:50%; background:conic-gradient(from 0deg,transparent 0deg,var(--halo,#FF2D78) 90deg,transparent 220deg); animation:conicSpin 5.5s linear infinite,glowPulse 3s ease-in-out infinite; filter:blur(16px); pointer-events:none; z-index:0; }
+.ring-halo-ripple { position:absolute; top:50%; left:50%; width:185%; height:185%; transform:translate(-50%,-50%); border-radius:50%; border:2px solid var(--halo,#FF2D78); animation:haloRipple 2.4s ease-out infinite; opacity:0; pointer-events:none; z-index:0; filter:blur(2px); }
+.bar-shim { animation:barSweep 2.2s ease-in-out infinite; }
+.tab-pill { position:absolute; height:32px; border-radius:12px; top:7px; transition:left .3s cubic-bezier(.34,1.26,.64,1),width .3s cubic-bezier(.34,1.26,.64,1),background .28s; pointer-events:none; z-index:0; }
+.tabrow::-webkit-scrollbar { display:none; }
+* { -webkit-tap-highlight-color:transparent; }
+.csnum { font-family:'Space Grotesk','Manrope',sans-serif; font-feature-settings:"tnum"; letter-spacing:-.5px; }
+.score-pop { animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both; }
+@media (prefers-reduced-motion:reduce) { *,*::after,*::before { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }
+
+@keyframes screenFlash { 0%{opacity:1} 100%{opacity:0} }
+@keyframes scoreSlam { 0%{transform:scale(2.8) translateY(-18px);filter:blur(14px);opacity:0} 55%{transform:scale(.91);filter:blur(0);opacity:1} 78%{transform:scale(1.07)} 100%{transform:scale(1)} }
+@keyframes borderSpin { to{--border-angle:360deg} }
+@keyframes slideInRight { 0%{transform:translateX(52px) scale(.97);opacity:0;filter:blur(5px)} 100%{transform:none;opacity:1;filter:none} }
+@keyframes slideInLeft { 0%{transform:translateX(-52px) scale(.97);opacity:0;filter:blur(5px)} 100%{transform:none;opacity:1;filter:none} }
+@property --border-angle { syntax:"<angle>"; initial-value:0deg; inherits:false; }
+.iridescent {
+  background:linear-gradient(var(--ibg,rgba(10,11,18,.95)),var(--ibg,rgba(10,11,18,.95))) padding-box,
+    conic-gradient(from var(--border-angle),#FF2D78 0%,#FFB200 25%,#B584FF 50%,#34D399 75%,#FF2D78 100%) border-box !important;
+  border:1.5px solid transparent !important;
+  animation:borderSpin 3.5s linear infinite;
+}
+.score-slam { animation:scoreSlam .75s cubic-bezier(.22,1.5,.36,1) both; }
 `;
+
+// ── SOUND ENGINE ─────────────────────────────────────────────────────
+const SFX = (() => {
+  let _ctx = null;
+  const gc = () => { if (!_ctx) { try { _ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} } return _ctx; };
+  const tone = (freq, type, dur, vol, detune=0, delay=0) => {
+    const c = gc(); if (!c) return;
+    const t = c.currentTime + delay;
+    const o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.type=type; o.frequency.value=freq; o.detune.value=detune;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+.005);
+    g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    o.start(t); o.stop(t+dur+.01);
+  };
+  const noise = (dur,vol,delay=0) => {
+    const c = gc(); if (!c) return;
+    const buf = c.createBuffer(1,c.sampleRate*dur,c.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1);
+    const s=c.createBufferSource(), g=c.createGain(), f=c.createBiquadFilter();
+    f.type='bandpass'; f.frequency.value=200; f.Q.value=0.5;
+    s.buffer=buf; s.connect(f); f.connect(g); g.connect(c.destination);
+    const t=c.currentTime+delay;
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    s.start(t); s.stop(t+dur);
+  };
+  return {
+    correct: () => { tone(523.25,'sine',.12,.18); tone(659.25,'sine',.14,.15,0,.08); tone(783.99,'sine',.22,.12,0,.16); tone(1046.5,'sine',.18,.08,0,.24); },
+    wrong: () => { tone(180,'sawtooth',.28,.12); tone(160,'square',.22,.08,-30); noise(.15,.06); },
+    milestone: () => { [523,587,659,698,784,880,1047].forEach((f,i)=>tone(f,'sine',.5,.16,0,i*.055)); },
+    tab: () => { tone(580,'sine',.08,.055); },
+    flip: () => { tone(700,'sine',.09,.04); tone(900,'sine',.07,.03,0,.05); },
+    examStart: () => { [440,554,659].forEach((f,i)=>tone(f,'sine',.4,.1,0,i*.15)); },
+    examSubmit: () => { [659,784,880,1047].forEach((f,i)=>tone(f,'sine',.6,.12,0,i*.08)); },
+  };
+})();
+
+// ── GAME EVENT BUS ────────────────────────────────────────────────────
+const fireGameEvent = (type, x, y) => {
+  window.dispatchEvent(new CustomEvent('game-event', { detail: { type, x, y } }));
+  try {
+    if (type === 'correct') navigator.vibrate && navigator.vibrate([12, 40, 20]);
+    if (type === 'wrong')   navigator.vibrate && navigator.vibrate([90]);
+    if (type === 'milestone') navigator.vibrate && navigator.vibrate([30,60,30,60,50]);
+  } catch(e) {}
+};
+
+// Global mood (shared with FXBackground canvas without props)
+window.__gameMood = { type: 'neutral', t: 0 };
+
+// ── PARTICLE CANVAS ───────────────────────────────────────────────────
+function ParticleCanvas() {
+  const ref = useRef(null);
+  const pts = useRef([]); const flashes = useRef([]); const raf = useRef(0);
+  useEffect(() => {
+    const canvas = ref.current; if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const resize = () => { canvas.width = window.innerWidth * (window.devicePixelRatio||1); canvas.height = window.innerHeight * (window.devicePixelRatio||1); ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1); };
+    resize(); window.addEventListener('resize', resize);
+    const CORRECT_COLORS = ['#34D399','#6EE7B7','#FFB200','#FF2D78','#B584FF','#fff'];
+    const spawnCorrect = (x, y) => {
+      const cx = x||window.innerWidth*.5, cy = y||window.innerHeight*.45;
+      for (let i=0;i<32;i++) {
+        const a=(Math.PI*2*i/32)+(Math.random()-.5)*.8, spd=5+Math.random()*12;
+        pts.current.push({ x:cx,y:cy, vx:Math.cos(a)*spd, vy:Math.sin(a)*spd-4,
+          life:1, decay:.018+Math.random()*.016, sz:3+Math.random()*7,
+          color:CORRECT_COLORS[Math.floor(Math.random()*CORRECT_COLORS.length)],
+          type:i%4===0?'star':i%4===1?'ring':'circle', grav:.28, spin:(Math.random()-.5)*.4 });
+      }
+      flashes.current.push({ type:'ring', x:cx, y:cy, r:10, maxR:160, life:1, color:'#34D399', lw:3 });
+      flashes.current.push({ type:'ring', x:cx, y:cy, r:5, maxR:90, life:1, color:'rgba(255,255,255,0.7)', lw:1.5 });
+      window.__gameMood = { type:'correct', t:Date.now() };
+    };
+    const spawnWrong = (x, y) => {
+      flashes.current.push({ type:'flash', color:'rgba(248,60,60,', life:1, decay:.07 });
+      const cx=x||window.innerWidth*.5, cy=y||window.innerHeight*.45;
+      for (let i=0;i<20;i++) {
+        const a=Math.PI*2*i/20, spd=2+Math.random()*7;
+        pts.current.push({ x:cx,y:cy, vx:Math.cos(a)*spd, vy:Math.sin(a)*spd,
+          life:1, decay:.04+Math.random()*.03, sz:2+Math.random()*5,
+          color:'#F87171', type:'shard', grav:.22, spin:0 });
+      }
+      window.__gameMood = { type:'wrong', t:Date.now() };
+    };
+    const spawnMilestone = () => {
+      const cx=window.innerWidth*.5, cy=window.innerHeight*.4;
+      const COLORS=['#FF2D78','#FFB200','#B584FF','#34D399','#fff','#FF6B5A','#60A5FA'];
+      for (let i=0;i<70;i++) {
+        const a=Math.random()*Math.PI*2, spd=4+Math.random()*18;
+        pts.current.push({ x:cx,y:cy, vx:Math.cos(a)*spd, vy:Math.sin(a)*spd-6,
+          life:1, decay:.007+Math.random()*.013, sz:5+Math.random()*11,
+          color:COLORS[Math.floor(Math.random()*COLORS.length)],
+          type:i%3===0?'star':i%5===0?'ring':'circle', grav:.25, spin:(Math.random()-.5)*.5 });
+      }
+      [160,100,60].forEach((maxR,i)=>{ setTimeout(()=>{ flashes.current.push({type:'ring',x:cx,y:cy,r:10,maxR,life:1,color:COLORS[i],lw:3-i*.5}); },i*80); });
+      window.__gameMood = { type:'milestone', t:Date.now() };
+    };
+    const handler = e => {
+      const {type,x,y}=e.detail;
+      if(type==='correct') spawnCorrect(x,y);
+      else if(type==='wrong') spawnWrong(x,y);
+      else if(type==='milestone') spawnMilestone();
+    };
+    window.addEventListener('game-event', handler);
+    const drawStar = (ctx,x,y,r) => {
+      ctx.beginPath();
+      for(let i=0;i<5;i++) { const a=i*4*Math.PI/5-Math.PI/2, b=a+Math.PI/5; ctx.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r); ctx.lineTo(x+Math.cos(b)*r*.38,y+Math.sin(b)*r*.38); }
+      ctx.closePath(); ctx.fill();
+    };
+    const loop = () => {
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      // Flashes
+      flashes.current = flashes.current.filter(f=>f.life>0);
+      for(const f of flashes.current) {
+        if(f.type==='flash') {
+          ctx.fillStyle=f.color+(f.life*.22)+')'; ctx.fillRect(0,0,window.innerWidth,window.innerHeight); f.life-=(f.decay||.06);
+        } else if(f.type==='ring') {
+          ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+          const alpha=Math.round(f.life*255).toString(16).padStart(2,'0');
+          ctx.strokeStyle=f.color.startsWith('rgba')?f.color:f.color+alpha;
+          ctx.lineWidth=(f.lw||3)*f.life; ctx.stroke();
+          f.r+=(f.maxR-f.r)*.11; f.life-=.033;
+        }
+      }
+      // Particles
+      pts.current = pts.current.filter(p=>p.life>0);
+      for(const p of pts.current) {
+        ctx.save(); ctx.globalAlpha=Math.pow(p.life,1.4); ctx.fillStyle=p.color; ctx.strokeStyle=p.color;
+        ctx.translate(p.x,p.y);
+        if(p.spin) ctx.rotate(p.spin*(1-p.life)*18);
+        const sz=p.sz*(p.life*.7+.3);
+        if(p.type==='star') drawStar(ctx,0,0,sz);
+        else if(p.type==='ring') { ctx.beginPath(); ctx.arc(0,0,sz,0,Math.PI*2); ctx.lineWidth=1.5*p.life; ctx.stroke(); }
+        else if(p.type==='shard') { ctx.beginPath(); ctx.moveTo(0,-sz); ctx.lineTo(sz*.4,sz*.5); ctx.lineTo(-sz*.4,sz*.5); ctx.closePath(); ctx.fill(); }
+        else { ctx.beginPath(); ctx.arc(0,0,sz,0,Math.PI*2); ctx.fill(); }
+        ctx.restore();
+        p.x+=p.vx; p.y+=p.vy; p.vy+=p.grav; p.vx*=.97; p.vy*=.99; p.life-=p.decay;
+      }
+      raf.current=requestAnimationFrame(loop);
+    };
+    loop();
+    return () => { cancelAnimationFrame(raf.current); window.removeEventListener('resize',resize); window.removeEventListener('game-event',handler); };
+  }, []);
+  return React.createElement('canvas',{ ref, 'aria-hidden':'true', style:{ position:'fixed',inset:0,width:'100%',height:'100%',zIndex:180,pointerEvents:'none' } });
+}
 
 function AnimatedRing({ value, size = 116, stroke = 9, colorA, colorB, trackColor = "rgba(255,255,255,0.07)", children, delay = 80, halo = false }) {
   const [shown, setShown] = useState(0);
@@ -295,7 +486,10 @@ function AnimatedRing({ value, size = 116, stroke = 9, colorA, colorB, trackColo
   const offset = circ * (1 - Math.max(0, Math.min(100, shown)) / 100);
   return (
     React.createElement('div', { style: { position: "relative", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center" },}
-      , halo && React.createElement('span', { className: "ring-halo", style: { "--halo": colorB },} )
+        , halo && React.createElement(React.Fragment, null,
+        React.createElement('span', { className: "ring-halo", style: { "--halo": colorB } }),
+        React.createElement('span', { className: "ring-halo-ripple", style: { "--halo": colorB } })
+      )
       , React.createElement('svg', { width: size, height: size, style: { transform: "rotate(-90deg)", position: "relative", zIndex: 1 },}
         , React.createElement('defs', null
           , React.createElement('linearGradient', { id: id, x1: "0%", y1: "0%", x2: "100%", y2: "100%",}
@@ -355,7 +549,7 @@ function Sparkline({ values, color = "#FF2D78", w = 320, h = 54 }) {
 
 function Logo({ size = 40 }) {
   return (
-    React.createElement('div', { style: { width: size, height: size, borderRadius: 12, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 16px rgba(255,45,120,0.45), 0 0 22px rgba(255,45,120,0.35)", overflow: "hidden", padding: 3, boxSizing: "border-box", animation: "floaty 4.5s ease-in-out infinite" },}
+    React.createElement('div', { style: { width: size, height: size, borderRadius: 12, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 18px rgba(255,45,120,0.55), 0 0 32px rgba(255,45,120,0.4), 0 0 60px rgba(255,45,120,0.15)", overflow: "hidden", padding: 3, boxSizing: "border-box", animation: "floaty 4.5s ease-in-out infinite" },}
       , React.createElement('img', { src: LOGO_SRC, alt: "ClownSchoolAI", style: { width: "100%", height: "100%", objectFit: "contain" },} )
     )
   );
@@ -964,48 +1158,64 @@ function FXBackground() {
     const canvas = ref.current; if (!canvas) return;
     const ctx = canvas.getContext("2d"); if (!ctx) return;
     const reduce = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let w = 0, h = 0, dpr = 1, raf = 0, orbs = [];
-    const palette = [[255,45,120],[255,178,0],[255,107,90],[181,132,255]];
+    let w=0, h=0, dpr=1, raf=0, orbs=[], mouse={x:.5,y:.5}, target={x:.5,y:.5};
+    const BASE_PALETTE = [[255,45,120],[255,107,90],[255,178,0],[181,132,255],[52,211,153],[255,45,120],[100,80,255],[255,178,0]];
+    const CORRECT_TINT = [52,211,153]; const WRONG_TINT = [248,100,100]; const MILESTONE_TINT = [255,178,0];
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = canvas.clientWidth || window.innerWidth;
-      h = canvas.clientHeight || window.innerHeight;
-      canvas.width = Math.max(1, w * dpr); canvas.height = Math.max(1, h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dpr = Math.min(window.devicePixelRatio||1,2);
+      w = canvas.clientWidth||window.innerWidth; h = canvas.clientHeight||window.innerHeight;
+      canvas.width = Math.max(1,w*dpr); canvas.height = Math.max(1,h*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
     };
     const init = () => {
-      orbs = Array.from({ length: 6 }, (_, i) => {
-        const c = palette[i % palette.length];
-        return { x: Math.random(), y: Math.random(), r: 120 + Math.random() * 150,
-          vx: (Math.random() - 0.5) * 0.00014, vy: (Math.random() - 0.5) * 0.00014,
-          c, a: 0.055 + Math.random() * 0.06 };
-      });
+      orbs = Array.from({length:9},(_,i) => ({
+        x:.08+Math.random()*.84, y:.08+Math.random()*.84,
+        r:130+Math.random()*210, vx:(Math.random()-.5)*.00016, vy:(Math.random()-.5)*.00016,
+        c:[...BASE_PALETTE[i%BASE_PALETTE.length]], base:[...BASE_PALETTE[i%BASE_PALETTE.length]],
+        a:.062+Math.random()*.075, phase:Math.random()*Math.PI*2, speed:.0006+Math.random()*.001
+      }));
     };
+    const lerp = (a,b,t) => a+(b-a)*t;
+    const lerpC = (a,b,t) => a.map((v,i)=>lerp(v,b[i],t));
+    const onMouse = e => { target.x=e.clientX/window.innerWidth; target.y=e.clientY/window.innerHeight; };
+    window.addEventListener("mousemove", onMouse, {passive:true});
     const draw = () => {
-      ctx.clearRect(0, 0, w, h);
-      ctx.globalCompositeOperation = "lighter";
-      for (const o of orbs) {
-        if (!reduce) {
-          o.x += o.vx; o.y += o.vy;
-          if (o.x < -0.15) o.x = 1.15; if (o.x > 1.15) o.x = -0.15;
-          if (o.y < -0.15) o.y = 1.15; if (o.y > 1.15) o.y = -0.15;
+      mouse.x=lerp(mouse.x,target.x,.035); mouse.y=lerp(mouse.y,target.y,.035);
+      ctx.clearRect(0,0,w,h);
+      const mood = window.__gameMood||{type:'neutral',t:0};
+      const moodAge = (Date.now()-mood.t)/1000;
+      const moodStr = Math.max(0, 1-moodAge*1.4);
+      const tint = mood.type==='correct'?CORRECT_TINT:mood.type==='wrong'?WRONG_TINT:mood.type==='milestone'?MILESTONE_TINT:null;
+      ctx.globalCompositeOperation="lighter";
+      for(const o of orbs) {
+        if(!reduce) {
+          o.phase+=o.speed; o.x+=o.vx+(mouse.x-.5)*.00004; o.y+=o.vy+(mouse.y-.5)*.00004;
+          if(o.x<-.18)o.x=1.18; if(o.x>1.18)o.x=-.18; if(o.y<-.18)o.y=1.18; if(o.y>1.18)o.y=-.18;
         }
-        const cx = o.x * w, cy = o.y * h;
-        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, o.r);
-        g.addColorStop(0, `rgba(${o.c[0]},${o.c[1]},${o.c[2]},${o.a})`);
-        g.addColorStop(1, `rgba(${o.c[0]},${o.c[1]},${o.c[2]},0)`);
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, o.r, 0, Math.PI * 2); ctx.fill();
+        if(tint && moodStr>.01) o.c=lerpC(o.base,tint,moodStr*.75);
+        else o.c=lerpC(o.c,o.base,.04);
+        const pulse=1+Math.sin(o.phase)*(mood.type==='milestone'&&moodStr>.1?.28:.1);
+        const boost=tint&&moodStr>.1?1+moodStr*.45:1;
+        const cx=o.x*w, cy=o.y*h, r=o.r*pulse*boost;
+        const a=o.a*pulse*(tint&&moodStr>.1?1+moodStr*.5:1);
+        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+        g.addColorStop(0,`rgba(${o.c[0]},${o.c[1]},${o.c[2]},${Math.min(.35,a)})`);
+        g.addColorStop(.4,`rgba(${o.c[0]},${o.c[1]},${o.c[2]},${a*.45})`);
+        g.addColorStop(1,`rgba(${o.c[0]},${o.c[1]},${o.c[2]},0)`);
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
       }
-      ctx.globalCompositeOperation = "source-over";
-      if (!reduce) raf = requestAnimationFrame(draw);
+      ctx.globalCompositeOperation="source-over";
+      const vg=ctx.createRadialGradient(w/2,h*.5,h*.15,w/2,h*.5,h*.9);
+      vg.addColorStop(0,"rgba(6,7,10,0)"); vg.addColorStop(1,"rgba(6,7,10,0.62)");
+      ctx.fillStyle=vg; ctx.fillRect(0,0,w,h);
+      if(!reduce) raf=requestAnimationFrame(draw);
     };
     resize(); init(); draw();
-    window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
-  return React.createElement('canvas', { ref: ref, 'aria-hidden': "true", style: { position: "fixed", inset: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" },} );
+    window.addEventListener("resize",resize);
+    return ()=>{ cancelAnimationFrame(raf); window.removeEventListener("resize",resize); window.removeEventListener("mousemove",onMouse); };
+  },[]);
+  return React.createElement('canvas',{ ref, 'aria-hidden':"true", style:{ position:"fixed",inset:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none" } });
 }
-
 function MD102Prep() {
   const [view, setView] = useState("dashboard");
   const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
@@ -1021,6 +1231,23 @@ function MD102Prep() {
   const [practResult, setPractResult] = useState(false);
   const [practError, setPractError] = useState(null);
   const [streak, setStreak] = useState(0);
+  const [gyro, setGyro] = useState({ x:0, y:0 });
+  const [slideDir, setSlideDir] = useState(0);
+  const prevViewRef = useRef("dashboard");
+  const switchTab = React.useCallback((v) => {
+    const oldIdx = TABS.findIndex(([t])=>t===prevViewRef.current);
+    const newIdx = TABS.findIndex(([t])=>t===v);
+    setSlideDir(newIdx>=oldIdx?1:-1);
+    setView(v); SFX.tab(); prevViewRef.current=v;
+  }, []);
+  useEffect(()=>{
+    const handler = e => {
+      if(e.gamma==null||e.beta==null) return;
+      setGyro({ x:Math.max(-1,Math.min(1,e.gamma/28)), y:Math.max(-1,Math.min(1,(e.beta-45)/28)) });
+    };
+    window.addEventListener('deviceorientation',handler,true);
+    return ()=>window.removeEventListener('deviceorientation',handler,true);
+  },[]);
 
   const [history, setHistory] = useState([]);
 
@@ -1201,16 +1428,32 @@ Generate one high-quality MD-102 exam question.`;
     if (practResult || !practQ || practSel.length === 0) return;
     setPractResult(true);
     const correct = sameSet(practSel, practQ.correct);
-    setStreak(p => correct ? p + 1 : 0);
+    const newStreak = correct ? streak + 1 : 0;
+    setStreak(newStreak);
     setHistory(p => [...p, { domainId: practQ.domainId, correct, ts: Date.now(), source: "practice" }]);
+    if (correct) {
+      SFX.correct();
+      const isMilestone = newStreak > 0 && newStreak % 5 === 0;
+      setTimeout(() => fireGameEvent(isMilestone ? 'milestone' : 'correct'), 60);
+      if (isMilestone) setTimeout(() => SFX.milestone(), 80);
+    } else { SFX.wrong(); fireGameEvent('wrong'); }
   };
   const handlePractAnswer = (key) => {
     if (practResult || !practQ) return;
     if (isMulti(practQ)) { togglePractSel(key); return; }
     setPractAnswer(key); setPractResult(true);
     const correct = key === practQ.correct;
-    setStreak(p => correct ? p + 1 : 0);
+    const newStreak = correct ? streak + 1 : 0;
+    setStreak(newStreak);
     setHistory(p => [...p, { domainId: practQ.domainId, correct, ts: Date.now(), source: "practice" }]);
+    if (correct) {
+      SFX.correct();
+      const isMilestone = newStreak > 0 && newStreak % 5 === 0;
+      setTimeout(() => fireGameEvent(isMilestone ? 'milestone' : 'correct'), 60);
+      if (isMilestone) setTimeout(() => SFX.milestone(), 80);
+    } else {
+      SFX.wrong(); fireGameEvent('wrong');
+    }
   };
   const startDomain = (d) => { setPractDomain(d); setView("quiz"); loadPracticeQ(d); };
 
@@ -1221,8 +1464,8 @@ Generate one high-quality MD-102 exam question.`;
   const srsDue = () => { const now = Date.now(); return { due: srsItems.filter(it => srs[it.key] && srs[it.key].due <= now), fresh: srsItems.filter(it => !srs[it.key]), learning: srsItems.filter(it => srs[it.key]), now }; };
   const scheduleItem = (key, correct) => setSrs(prev => { const cur = prev[key] || { box: 0, reps: 0 }; const box = correct ? Math.min(cur.box + 1, SRS_BOXES.length - 1) : 1; return { ...prev, [key]: { box, reps: (cur.reps || 0) + 1, lastCorrect: correct, due: Date.now() + SRS_BOXES[box] * SRS_DAY, ts: Date.now() } }; });
   const startReview = () => { const { due, fresh } = srsDue(); const need = Math.max(0, 12 - due.length); const queue = shuffle(due).concat(shuffle(fresh).slice(0, need)).slice(0, 15).map(it => ({ ...it.q, _key: it.key, domainId: it.d.id, domainLabel: it.d.label, domainColor: it.d.color })); setReviewQueue(queue); setReviewIdx(0); setReviewSel([]); setReviewAns(null); setReviewResult(false); setReviewStats({ right: 0, total: 0 }); setReviewDone(queue.length === 0); setReviewActive(queue.length > 0); };
-  const submitReview = (key) => { if (reviewResult) return; const q = reviewQueue[reviewIdx]; if (!q) return; if (isMulti(q)) { setReviewSel(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]); return; } setReviewAns(key); setReviewResult(true); const right = key === q.correct; scheduleItem(q._key, right); setReviewStats(s => ({ right: s.right + (right ? 1 : 0), total: s.total + 1 })); setHistory(p => [...p, { domainId: q.domainId, correct: right, ts: Date.now(), source: "review" }]); };
-  const submitReviewMulti = () => { if (reviewResult) return; const q = reviewQueue[reviewIdx]; if (!q || reviewSel.length === 0) return; setReviewResult(true); const right = sameSet(reviewSel, q.correct); scheduleItem(q._key, right); setReviewStats(s => ({ right: s.right + (right ? 1 : 0), total: s.total + 1 })); setHistory(p => [...p, { domainId: q.domainId, correct: right, ts: Date.now(), source: "review" }]); };
+  const submitReview = (key) => { if (reviewResult) return; const q = reviewQueue[reviewIdx]; if (!q) return; if (isMulti(q)) { setReviewSel(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]); return; } setReviewAns(key); setReviewResult(true); const right = key === q.correct; scheduleItem(q._key, right); setReviewStats(s => ({ right: s.right + (right ? 1 : 0), total: s.total + 1 })); setHistory(p => [...p, { domainId: q.domainId, correct: right, ts: Date.now(), source: "review" }]); if(right){SFX.correct();setTimeout(()=>fireGameEvent('correct'),60);}else{SFX.wrong();fireGameEvent('wrong');} };
+  const submitReviewMulti = () => { if (reviewResult) return; const q = reviewQueue[reviewIdx]; if (!q || reviewSel.length === 0) return; setReviewResult(true); const right = sameSet(reviewSel, q.correct); scheduleItem(q._key, right); setReviewStats(s => ({ right: s.right + (right ? 1 : 0), total: s.total + 1 })); setHistory(p => [...p, { domainId: q.domainId, correct: right, ts: Date.now(), source: "review" }]); if(right){SFX.correct();setTimeout(()=>fireGameEvent('correct'),60);}else{SFX.wrong();fireGameEvent('wrong');} };
   const nextReview = () => { if (reviewIdx < reviewQueue.length - 1) { setReviewIdx(i => i + 1); setReviewSel([]); setReviewAns(null); setReviewResult(false); } else { setReviewActive(false); setReviewDone(true); } };
 
   // ── Flashcards ──
@@ -1254,7 +1497,7 @@ Generate one high-quality MD-102 exam question.`;
     setExamState("active");
   };
   const doSubmitExam = () => {
-    setExamState("results"); setConfirmSubmit(false);
+    setExamState("results"); SFX.examSubmit(); setTimeout(()=>fireGameEvent("milestone"),300); setConfirmSubmit(false);
     setHistory(prev => [...prev, ...examQuestions.map((q, i) => ({ domainId: q.domainId, correct: isExamRight(q, examAnswers[i]), ts: Date.now(), source: "exam" }))]);
   };
   const toggleFlag = (idx) => setExamFlags(prev => { const n = new Set(prev); n.has(idx) ? n.delete(idx) : n.add(idx); return n; });
@@ -1309,14 +1552,15 @@ Generate one high-quality MD-102 exam question.`;
   const contentPad = desktop ? "30px 40px 64px" : "20px 16px calc(112px + env(safe-area-inset-bottom))";
 
   return (
-    React.createElement('div', { style: { minHeight: "100dvh", background: C.bg, color: C.textPrimary, fontFamily: "'Manrope',system-ui,sans-serif", paddingBottom: 0, paddingLeft: desktop ? 250 : 0, position: "relative", overflow: "hidden", "--bhi": C.borderHi },}
+    React.createElement('div', { style: { minHeight: "100dvh", background: C.bg, color: C.textPrimary, fontFamily: "'Manrope',system-ui,sans-serif", paddingBottom: 0, paddingLeft: desktop ? 250 : 0, position: "relative", overflow: "hidden", "--bhi": C.borderHi, backgroundImage: "url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E")", backgroundRepeat: "repeat", backgroundSize: "200px 200px" },}
       , React.createElement('style', null, CSS)
 
       /* Live generative backdrop (canvas) */
       , React.createElement(FXBackground, null )
+      , React.createElement(ParticleCanvas, null )
 
       /* DESKTOP SIDEBAR */
-      , desktop && React.createElement('div', { style: { position: "fixed", left: 0, top: 0, bottom: 0, width: 250, zIndex: 100, display: "flex", flexDirection: "column", background: "rgba(10,11,16,0.82)", backdropFilter: "blur(18px)", borderRight: `1px solid ${C.border}`, padding: "26px 16px 18px" },}
+      , desktop && React.createElement('div', { style: { position: "fixed", left: 0, top: 0, bottom: 0, width: 250, zIndex: 100, display: "flex", flexDirection: "column", background: "rgba(6,7,10,0.92)", backdropFilter: "blur(28px) saturate(1.6)", WebkitBackdropFilter: "blur(28px) saturate(1.6)", borderRight: "1px solid rgba(255,255,255,0.065)", padding: "26px 16px 18px" },}
         , React.createElement('div', { style: { display: "flex", alignItems: "center", gap: 11, padding: "0 8px", marginBottom: 28 },}
           , React.createElement(Logo, { size: 38,} )
           , React.createElement('div', null
@@ -1328,7 +1572,7 @@ Generate one high-quality MD-102 exam question.`;
           , TABS.map(([v, label, Icon]) => {
             const active = view === v;
             const accent = inExam ? timerColor : "#FF2D78";
-            return React.createElement('button', { key: v, className: "md-btn", onClick: () => setView(v), style: { display: "flex", alignItems: "center", gap: 13, padding: "11px 14px", borderRadius: 12, cursor: "pointer", border: active ? `1px solid ${accent}40` : "1px solid transparent", background: active ? `${accent}18` : "transparent", color: active ? accent : C.textSec, fontWeight: active ? 700 : 600, fontSize: 14, textAlign: "left", boxShadow: active ? `0 6px 18px ${accent}22` : "none" },}
+            return React.createElement('button', { key: v, className: "md-btn", onClick: () => switchTab(v), style: { display: "flex", alignItems: "center", gap: 13, padding: "11px 14px", borderRadius: 12, cursor: "pointer", border: active ? `1px solid ${accent}40` : "1px solid transparent", background: active ? `${accent}18` : "transparent", color: active ? accent : C.textSec, fontWeight: active ? 700 : 600, fontSize: 14, textAlign: "left", boxShadow: active ? `0 6px 18px ${accent}22` : "none" },}
               , React.createElement(Icon, { size: 19, strokeWidth: active ? 2.4 : 2, style: { flexShrink: 0, filter: active ? `drop-shadow(0 0 6px ${accent}aa)` : "none" },} )
               , React.createElement('span', null, label)
             );
@@ -1351,7 +1595,7 @@ Generate one high-quality MD-102 exam question.`;
       )
 
       /* HEADER */
-      , React.createElement('div', { style: { position: "sticky", top: 0, zIndex: 100, background: "rgba(8,11,20,0.72)", backdropFilter: "blur(16px)", borderBottom: `1px solid ${C.border}`, padding: "calc(13px + env(safe-area-inset-top)) 18px 13px", display: desktop ? "none" : "flex", justifyContent: "space-between", alignItems: "center" },}
+      , React.createElement('div', { style: { position: "sticky", top: 0, zIndex: 100, background: "rgba(6,7,12,0.85)", backdropFilter: "blur(24px) saturate(1.5)", WebkitBackdropFilter: "blur(24px) saturate(1.5)", borderBottom: "1px solid rgba(255,255,255,0.065)", padding: "calc(13px + env(safe-area-inset-top)) 18px 13px", display: desktop ? "none" : "flex", justifyContent: "space-between", alignItems: "center" },}
         , React.createElement('div', { style: { display: "flex", alignItems: "center", gap: 11 },}
           , React.createElement(Logo, { size: 40,} )
           , React.createElement('div', null
@@ -1361,7 +1605,7 @@ Generate one high-quality MD-102 exam question.`;
         )
         , React.createElement('div', { style: { display: "flex", gap: 14, alignItems: "center" },}
           , streak >= 3 && (
-            React.createElement('div', { style: { display: "flex", alignItems: "center", gap: 4, padding: "5px 10px", borderRadius: 20, background: "rgba(255,178,0,0.14)", border: "1px solid rgba(255,178,0,0.4)", boxShadow: "0 0 16px rgba(255,178,0,0.25)", animation: "popIn .4s cubic-bezier(.34,1.56,.64,1) both" },}
+            React.createElement('div', { style: { display: "flex", alignItems: "center", gap: 4, padding: "5px 10px", borderRadius: 20, background: "rgba(255,178,0,0.14)", border: "1px solid rgba(255,178,0,0.4)", boxShadow: "0 0 24px rgba(255,178,0,0.45), 0 0 48px rgba(255,178,0,0.2)", animation: "popIn .4s cubic-bezier(.34,1.56,.64,1) both" },}
               , React.createElement(Flame, { size: 14, color: C.warning, fill: C.warning, style: { animation: "flameFlicker 1.1s ease-in-out infinite", transformOrigin: "center bottom" },} )
               , React.createElement('span', { style: { fontSize: 13, color: C.warning, fontWeight: 800 },}, streak)
             )
@@ -1381,26 +1625,32 @@ Generate one high-quality MD-102 exam question.`;
       )
 
       /* BOTTOM TAB BAR (iOS) */
-      , React.createElement('div', { className: "tabrow", style: { position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100, display: desktop ? "none" : "flex", background: "rgba(8,11,20,0.92)", backdropFilter: "blur(18px)", borderTop: `1px solid ${C.border}`, padding: "0 4px", paddingBottom: "env(safe-area-inset-bottom)" },}
-        , TABS.map(([v, label, Icon]) => {
-          const active = view === v;
-          const accent = inExam ? timerColor : "#FF2D78";
-          return (
-            React.createElement('button', { key: v, className: "md-tab", onClick: () => setView(v), style: {
-              flex: 1, padding: "9px 2px 8px", background: "none", border: "none", cursor: "pointer", minHeight: 52,
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 3, position: "relative",
-              color: active ? accent : C.textSec, fontWeight: active ? 700 : 500, fontSize: 9.5
-            },}
-              , active && React.createElement('div', { style: { position: "absolute", top: 4, width: 40, height: 28, borderRadius: 10, background: `${accent}22`, boxShadow: `0 0 16px ${accent}55`, animation: "popIn .35s cubic-bezier(.34,1.56,.64,1) both", zIndex: 0 },} )
-              , React.createElement(Icon, { size: 18, strokeWidth: active ? 2.5 : 2, style: { position: "relative", zIndex: 1, transform: active ? "translateY(-1px) scale(1.08)" : "none", transition: "transform .25s cubic-bezier(.34,1.56,.64,1)", filter: active ? `drop-shadow(0 0 6px ${accent})` : "none" },} )
-              , React.createElement('span', { style: { position: "relative", zIndex: 1 },}, label)
-              , active && React.createElement('div', { style: { position: "absolute", top: 0, height: 2.5, width: 30, borderRadius: 3, background: accent, boxShadow: `0 0 10px ${accent}` },} )
-            )
-          );
-        })
-      )
+      , (() => {
+        const activeTabIndex = TABS.findIndex(([v]) => v === view);
+        const accent = inExam ? timerColor : "#FF2D78";
+        const tabW = 100 / TABS.length;
+        const pillLeft = `calc(${activeTabIndex} * (100% / ${TABS.length}) + (100% / ${TABS.length} - 44px) / 2)`;
+        return React.createElement('div', { className: "tabrow", style: { position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100, display: desktop ? "none" : "flex", background: "rgba(6,7,12,0.94)", backdropFilter: "blur(22px) saturate(1.6)", WebkitBackdropFilter: "blur(22px) saturate(1.6)", borderTop: `1px solid rgba(255,255,255,0.06)`, padding: "0 4px", paddingBottom: "env(safe-area-inset-bottom)", position: "fixed" },}
+          , React.createElement('div', { className: "tab-pill", style: { left: pillLeft, width: 44, background: `${accent}20`, boxShadow: `0 0 22px ${accent}44, inset 0 0 0 1px ${accent}30` } })
+          , TABS.map(([v, label, Icon], idx) => {
+            const active = view === v;
+            return (
+              React.createElement('button', { key: v, className: "md-tab", onClick: () => switchTab(v), style: {
+                flex: 1, padding: "9px 2px 8px", background: "none", border: "none", cursor: "pointer", minHeight: 54,
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 3, position: "relative",
+                color: active ? accent : C.textMuted, fontWeight: active ? 700 : 500, fontSize: 9.5
+              },}
+                , active && React.createElement('div', { style: { position: "absolute", top: 0, height: 2, width: 28, borderRadius: 2, background: `linear-gradient(90deg, transparent, ${accent}, transparent)`, boxShadow: `0 0 12px ${accent}`, transition: "opacity .3s" } })
+                , React.createElement(Icon, { size: 18, strokeWidth: active ? 2.6 : 1.8, style: { position: "relative", zIndex: 1, transform: active ? "translateY(-1px) scale(1.12)" : "scale(1)", transition: "transform .3s cubic-bezier(.34,1.56,.64,1), filter .3s", filter: active ? `drop-shadow(0 0 7px ${accent})` : "none" } })
+                , React.createElement('span', { style: { position: "relative", zIndex: 1, transition: "color .28s", letterSpacing: active ? ".2px" : "0" } }, label)
+              )
+            );
+          })
+        );
+      })()
 
-      , React.createElement('div', { key: view, style: { position: "relative", zIndex: 5, padding: contentPad, maxWidth: contentMax, margin: "0 auto", animation: "viewIn .5s cubic-bezier(.22,1,.36,1) both" },}
+
+      , React.createElement('div', { key: view, style: { position: "relative", zIndex: 5, padding: contentPad, maxWidth: contentMax, margin: "0 auto", animation: "viewIn .42s cubic-bezier(.22,1,.36,1) both", transform: desktop ? `perspective(1400px) rotateY(${gyro.x*1.8}deg) rotateX(${-gyro.y*1.8}deg)` : undefined, willChange: "transform", transition: "transform .12s linear" },}
 
         /* ════ DASHBOARD ════ */
         , view === "dashboard" && (() => {
@@ -1428,7 +1678,7 @@ Generate one high-quality MD-102 exam question.`;
               , React.createElement('div', null
                 , React.createElement('div', { style: { fontSize: 10.5, letterSpacing: 1.5, color: C.textMuted, fontWeight: 700, textTransform: "uppercase" },}, "Projected score")
                 , React.createElement('div', { style: { display: "flex", alignItems: "baseline", gap: 8, marginTop: 5 },}
-                  , React.createElement('span', { className: "csnum", style: { fontSize: 40, fontWeight: 700, color: projColor, lineHeight: 1 },}, projected !== null ? React.createElement(CountUp, { value: projected, duration: 1200,} ) : "—")
+                  , React.createElement('span', { className: "csnum", style: { fontSize: 42, fontWeight: 800, color: projColor, lineHeight: 1, textShadow: `0 0 30px ${projColor}66`, transition: "color .5s, text-shadow .5s" },}, projected !== null ? React.createElement(CountUp, { value: projected, duration: 1200,} ) : "—")
                   , React.createElement('span', { style: { fontSize: 13, color: C.textMuted, fontWeight: 600 },}, "/ 1000")
                 )
               )
@@ -1468,7 +1718,7 @@ Generate one high-quality MD-102 exam question.`;
             )
           );
 
-          const smartReview = React.createElement('button', { key: "sr", className: "md-btn", onClick: () => setView("review"), style: { width: "100%", display: "flex", alignItems: "center", gap: 14, padding: 18, borderRadius: 18, border: "none", cursor: "pointer", textAlign: "left", background: "linear-gradient(120deg,#FF2D78,#FFB200)", color: "#0C0E15", boxShadow: "0 14px 34px rgba(255,45,120,0.3)" },}
+          const smartReview = React.createElement('button', { key: "sr", className: "md-btn iridescent", onClick: () => { setView("review"); SFX.tab(); }, style: { "--ibg": "rgba(255,45,120,0.08)", width: "100%", display: "flex", alignItems: "center", gap: 14, padding: 18, borderRadius: 18, border: "none", cursor: "pointer", textAlign: "left", background: "linear-gradient(120deg,#FF2D78,#FF6B5A,#FFB200)", color: "#0C0E15", boxShadow: "0 16px 48px rgba(255,45,120,0.45), 0 0 0 1px rgba(255,255,255,0.1)" },}
             , React.createElement('div', { style: { width: 46, height: 46, borderRadius: 14, background: "rgba(12,14,21,0.16)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },}
               , React.createElement(Sparkles, { size: 22, color: "#0C0E15",} )
             )
@@ -1566,8 +1816,8 @@ Generate one high-quality MD-102 exam question.`;
                   let bg = C.surf2, bdr = C.border, txt = C.textPrimary, glow = "none";
                   if (!reviewResult && selected) { bg = "rgba(255,45,120,0.12)"; bdr = "#FF2D78"; txt = "#FF9DC0"; }
                   if (reviewResult) {
-                    if (cks.includes(key)) { bg = "rgba(52,211,153,0.13)"; bdr = C.correct; txt = C.correct; glow = `0 0 0 1px ${C.correct}55`; }
-                    else if (selected) { bg = "rgba(248,113,113,0.13)"; bdr = C.wrong; txt = C.wrong; }
+                    if (cks.includes(key)) { bg = "rgba(52,211,153,0.16)"; bdr = C.correct; txt = C.correct; glow = `0 0 0 1px ${C.correct}66, 0 0 28px rgba(52,211,153,0.2), inset 0 0 12px rgba(52,211,153,0.06)`; }
+                    else if (selected) { bg = "rgba(248,113,113,0.16)"; bdr = C.wrong; txt = C.wrong; glow = `0 0 0 1px rgba(248,113,113,0.5), 0 0 22px rgba(248,113,113,0.18)`; }
                   }
                   const showCheck = reviewResult && cks.includes(key);
                   const showX = reviewResult && selected && !cks.includes(key);
@@ -1624,7 +1874,7 @@ Generate one high-quality MD-102 exam question.`;
                   const s = getDomainStat(d.id);
                   const pct = s.answered > 0 ? Math.round((s.correct / s.answered) * 100) : null;
                   return (
-                    React.createElement('button', { key: d.id, className: "md-card md-btn" , onClick: () => startDomain(d), style: { width: "100%", display: "flex", alignItems: "center", gap: 14, background: C.surf1, border: `1px solid ${C.border}`, borderRadius: 14, padding: "15px 16px", marginBottom: 11, color: C.textPrimary, cursor: "pointer", textAlign: "left", animation: `fadeUp .45s ease both`, animationDelay: `${i*60}ms` },}
+                    React.createElement('button', { key: d.id, className: "md-card md-btn" , onClick: () => startDomain(d), className: "md-card md-btn iridescent", style: { "--ibg": C.surf1, width: "100%", display: "flex", alignItems: "center", gap: 14, borderRadius: 14, padding: "15px 16px", marginBottom: 11, color: C.textPrimary, cursor: "pointer", textAlign: "left", animation: `fadeUp .45s ease both`, animationDelay: `${i*60}ms`, transition: "transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .3s", '--hover-shadow': `0 12px 40px ${d.color}22` },}
                       , React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: d.grad, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: `0 4px 14px ${d.color}40` },}
                         , React.createElement(ShieldCheck, { size: 20, color: "#fff",} )
                       )
@@ -1677,7 +1927,7 @@ Generate one high-quality MD-102 exam question.`;
                       if (!practResult && selected) { bg = "rgba(255,45,120,0.12)"; bdr = "#FF2D78"; txt = "#FF9DC0"; }
                       if (practResult) {
                         if (cks.includes(key)) { bg = "rgba(52,211,153,0.13)"; bdr = C.correct; txt = C.correct; glow = `0 0 0 1px ${C.correct}55`; }
-                        else if (selected) { bg = "rgba(248,113,113,0.13)"; bdr = C.wrong; txt = C.wrong; }
+                        else if (selected) { bg = "rgba(248,113,113,0.16)"; bdr = C.wrong; txt = C.wrong; glow = `0 0 0 1px rgba(248,113,113,0.5), 0 0 22px rgba(248,113,113,0.18)`; }
                       }
                       const showCheck = practResult && cks.includes(key);
                       const showX = practResult && selected && !cks.includes(key);
@@ -1778,7 +2028,7 @@ Generate one high-quality MD-102 exam question.`;
 
                     /* 3D flip card — tilts and catches light as you move on it */
                     , React.createElement('div', { className: "flip-card", style: { height: 340, marginBottom: 16, cursor: "pointer", transform: `rotateX(${card3d.rx}deg) rotateY(${card3d.ry}deg)`, transition: card3d.on ? "transform .08s linear" : "transform .5s cubic-bezier(.22,1,.36,1)", willChange: "transform" },
-                      onClick: () => setFlipped(f => !f),
+                      onClick: () => { setFlipped(f => !f); SFX.flip(); },
                       onPointerMove: (e) => { const r = e.currentTarget.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width; const py = (e.clientY - r.top) / r.height; setCard3d({ rx: (0.5 - py) * 14, ry: (px - 0.5) * 16, px: px * 100, py: py * 100, on: true }); },
                       onPointerLeave: () => setCard3d(c => ({ ...c, rx: 0, ry: 0, on: false })),
                       onPointerUp: () => setCard3d(c => ({ ...c, rx: 0, ry: 0, on: false })),}
@@ -2005,7 +2255,7 @@ Generate one high-quality MD-102 exam question.`;
                       , React.createElement(AlertTriangle, { size: 15,} ), " " , examPrepError
                     )
                   )
-                  , React.createElement('button', { className: "md-btn", onClick: prepareExam, style: { width: "100%", padding: 16, background: C.brand, border: "none", borderRadius: 13, color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 8px 24px rgba(255,45,120,0.45)" },}, "Start exam simulation "
+                  , React.createElement('button', { className: "md-btn", onClick: () => { prepareExam(); SFX.examStart(); }, style: { width: "100%", padding: 16, background: C.brand, border: "none", borderRadius: 13, color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 8px 24px rgba(255,45,120,0.45)" },}, "Start exam simulation "
                        , React.createElement(ArrowRight, { size: 18,} )
                   )
                 )
@@ -2173,7 +2423,7 @@ Generate one high-quality MD-102 exam question.`;
                           , React.createElement('div', { style: { display: "flex", alignItems: "center", gap: 7 },}, React.createElement('div', { style: { width: 8, height: 8, borderRadius: "50%", background: d.grad },} ), React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700 },}, d.label))
                           , React.createElement('div', { style: { fontSize: 10.5, color: C.textMuted, marginTop: 2, marginLeft: 15 },}, indices.length, " questions · "   , d.weight, "% of real exam"   )
                         )
-                        , React.createElement('div', { style: { textAlign: "right" },}, React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: scoreColor(pct) },}, pct, "%"), React.createElement('div', { style: { fontSize: 10, color: C.textMuted },}, correct, "/", indices.length))
+                        , React.createElement('div', { style: { textAlign: "right" },}, React.createElement('div', { style: { fontSize: 21, fontWeight: 800, color: scoreColor(pct), textShadow: `0 0 20px ${scoreColor(pct)}55` },}, pct, "%"), React.createElement('div', { style: { fontSize: 10, color: C.textMuted },}, correct, "/", indices.length))
                       )
                       , React.createElement('div', { style: { height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 6, overflow: "hidden" },}
                         , React.createElement('div', { style: { height: "100%", width: `${pct}%`, background: scoreColor(pct), borderRadius: 6, transition: "width 1s cubic-bezier(.22,1,.36,1)" },} )
