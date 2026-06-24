@@ -543,6 +543,196 @@ const SIMS = [
       explain: { include: "Applies to all users.", excludeBG: "Excluding break-glass prevents a full lockout.", apps: "Targets all cloud apps.", grant: "The require-compliant-device grant enforces Intune compliance.", enable: "Start in Report-only to validate before turning it On." }
     },
     success: "A Conditional Access policy now requires compliant devices for all cloud apps, excludes break-glass, and runs in Report-only for safe validation."
+  },
+  {
+    id: "sim-esp", domainId: "maintain", console: "Microsoft Intune admin center",
+    title: "Configure the Enrollment Status Page (ESP)",
+    goal: "Create an ESP profile that shows progress, blocks device use until required apps install, sets a 60-minute timeout, and assigns it to All Autopilot Devices.",
+    brief: "Help desk reports users reach the desktop before required apps finish installing during Autopilot provisioning. You need an ESP that holds them at the setup screen until everything is ready.",
+    nav: INTUNE_NAV, navId: "devices",
+    blade: { items: [
+      { id: "overview", label: "Overview" }, { id: "all", label: "All devices" },
+      { id: "enroll", label: "Enrollment" }, { id: "config", label: "Configuration" },
+      { id: "compliance", label: "Compliance" }, { id: "scripts", label: "Scripts and remediations" }
+    ], correctItemId: "enroll", listTitle: "Enrollment Status Page", createLabel: "Create" },
+    wizard: {
+      tabs: [
+        { id: "basics", label: "Basics", fields: [
+          { key: "name", label: "Profile name", type: "text", placeholder: "e.g. ESP-Autopilot-Block" }
+        ]},
+        { id: "settings", label: "Settings", fields: [
+          { key: "showProgress", label: "Show app and profile configuration progress", type: "toggle", help: "Displays a progress screen during Autopilot setup." },
+          { key: "blockUse", label: "Block device use until all apps and profiles are installed", type: "toggle", help: "Prevents desktop access until required items complete — critical for kiosks and shared devices." },
+          { key: "timeout", label: "Time limit (minutes)", type: "select", options: [{ value: "15", label: "15 minutes" }, { value: "30", label: "30 minutes" }, { value: "60", label: "60 minutes" }, { value: "120", label: "120 minutes" }], help: "How long ESP waits before showing an error and allowing the user to continue." }
+        ]},
+        { id: "assign", label: "Assignments", fields: [
+          { key: "group", label: "Assign to group", type: "group", options: GROUPS }
+        ]}
+      ],
+      target: { name: "*", showProgress: true, blockUse: true, timeout: "60", group: "autopilot-devices" },
+      explain: { showProgress: "Showing progress is best practice so users and technicians can monitor setup.", blockUse: "Blocking desktop access ensures apps are fully installed before users interact with the device.", timeout: "60 minutes is a reasonable ceiling for most app sets without unnecessarily delaying setup.", group: "ESP assigns to the Autopilot device group, not users." }
+    },
+    success: "The ESP now holds users at the setup screen until required apps and profiles complete, with a 60-minute timeout, assigned to Autopilot devices."
+  },
+  {
+    id: "sim-updatering", domainId: "protect", console: "Microsoft Intune admin center",
+    title: "Create a Windows Update ring",
+    goal: "Create an update ring that defers quality updates 2 days, feature updates 5 days, sets active hours 8 AM–6 PM, and assigns it to All Windows Devices.",
+    brief: "IT needs a controlled patching cadence — security updates should apply quickly but restarts must not interrupt business hours.",
+    nav: INTUNE_NAV, navId: "devices",
+    blade: { items: [
+      { id: "overview", label: "Overview" }, { id: "all", label: "All devices" },
+      { id: "enroll", label: "Enrollment" }, { id: "config", label: "Configuration" },
+      { id: "updaterings", label: "Update rings (Windows)" }, { id: "compliance", label: "Compliance" }
+    ], correctItemId: "updaterings", listTitle: "Update rings for Windows 10 and later", createLabel: "Create profile" },
+    wizard: {
+      tabs: [
+        { id: "basics", label: "Basics", fields: [
+          { key: "name", label: "Name", type: "text", placeholder: "e.g. WUfB-Standard-Ring" }
+        ]},
+        { id: "settings", label: "Update ring settings", fields: [
+          { key: "qualityDeferral", label: "Quality update deferral (days)", type: "select", options: [{ value: "0", label: "0 days" }, { value: "2", label: "2 days" }, { value: "7", label: "7 days" }, { value: "14", label: "14 days" }], help: "Delays security and quality patches this many days after Microsoft releases them." },
+          { key: "featureDeferral", label: "Feature update deferral (days)", type: "select", options: [{ value: "0", label: "0 days" }, { value: "5", label: "5 days" }, { value: "30", label: "30 days" }, { value: "60", label: "60 days" }], help: "Delays Windows version upgrades (e.g. 22H2 → 23H2) by this many days." },
+          { key: "activeHoursStart", label: "Active hours start", type: "select", options: [{ value: "6", label: "6 AM" }, { value: "8", label: "8 AM" }, { value: "9", label: "9 AM" }], help: "Windows will not restart for updates during active hours." },
+          { key: "activeHoursEnd", label: "Active hours end", type: "select", options: [{ value: "17", label: "5 PM" }, { value: "18", label: "6 PM" }, { value: "20", label: "8 PM" }], help: "Restarts are deferred until after active hours end." }
+        ]},
+        { id: "assign", label: "Assignments", fields: [
+          { key: "group", label: "Assign to group", type: "group", options: GROUPS }
+        ]}
+      ],
+      target: { name: "*", qualityDeferral: "2", featureDeferral: "5", activeHoursStart: "8", activeHoursEnd: "18", group: "all-windows" },
+      explain: { qualityDeferral: "2-day deferral gives time to catch bad patches without dangerously delaying security fixes.", featureDeferral: "5 days is a light buffer before Windows version upgrades roll out.", activeHoursStart: "8 AM marks the start of standard business hours.", activeHoursEnd: "6 PM marks the end — restarts can occur after this.", group: "Assign to All Windows Devices." }
+    },
+    success: "Windows devices now defer quality updates 2 days and feature updates 5 days, with automatic restarts blocked during 8 AM–6 PM business hours."
+  },
+  {
+    id: "sim-appprotection", domainId: "apps", console: "Microsoft Intune admin center",
+    title: "Create an iOS/iPadOS App Protection Policy (MAM)",
+    goal: "Create an iOS app protection policy targeting all managed apps that blocks org data backup, restricts cut/copy/paste to managed apps, and requires a numeric PIN.",
+    brief: "BYOD iPhones need corporate data protected at the app layer without full device enrollment — the classic MAM without enrollment (MAM-WE) scenario.",
+    nav: INTUNE_NAV, navId: "apps",
+    blade: { items: [
+      { id: "all", label: "All apps" }, { id: "windows", label: "Windows" },
+      { id: "ios", label: "iOS/iPadOS" }, { id: "macos", label: "macOS" },
+      { id: "config", label: "App configuration policies" }, { id: "protection", label: "App protection policies" }
+    ], correctItemId: "protection", listTitle: "App protection policies", createLabel: "Create policy" },
+    wizard: {
+      tabs: [
+        { id: "basics", label: "Basics", fields: [
+          { key: "platform", label: "Platform", type: "select", options: [{ value: "ios", label: "iOS/iPadOS" }, { value: "android", label: "Android" }], help: "MAM app protection policies are platform-specific." },
+          { key: "name", label: "Policy name", type: "text", placeholder: "e.g. MAM-iOS-Corporate" }
+        ]},
+        { id: "apps", label: "Apps", fields: [
+          { key: "targetApps", label: "Target policy to", type: "select", options: [{ value: "allManaged", label: "All managed apps" }, { value: "selected", label: "Select apps" }], help: "'All managed apps' covers all Microsoft and Intune SDK-enabled apps — broadest protection." }
+        ]},
+        { id: "dataprotection", label: "Data protection", fields: [
+          { key: "preventBackup", label: "Prevent backup of org data to iTunes and iCloud", type: "toggle", help: "Stops corporate data from leaving via cloud or local device backup." },
+          { key: "cutCopyPaste", label: "Restrict cut, copy, and paste", type: "select", options: [{ value: "any", label: "Any app" }, { value: "managedApps", label: "Policy managed apps" }, { value: "blocked", label: "Blocked" }], help: "'Policy managed apps' allows paste between managed apps but blocks paste into personal/unmanaged apps." }
+        ]},
+        { id: "access", label: "Access requirements", fields: [
+          { key: "pin", label: "Require PIN for access", type: "toggle", help: "Users must set a PIN to open any managed app." },
+          { key: "pinType", label: "PIN type", type: "select", options: [{ value: "numeric", label: "Numeric" }, { value: "passcode", label: "Passcode" }], help: "Numeric PIN is the standard MAM access control." }
+        ]},
+        { id: "assign", label: "Assignments", fields: [
+          { key: "group", label: "Assign to group", type: "group", options: GROUPS }
+        ]}
+      ],
+      target: { platform: "ios", name: "*", targetApps: "allManaged", preventBackup: true, cutCopyPaste: "managedApps", pin: true, pinType: "numeric", group: "all-users" },
+      explain: { platform: "Target iOS/iPadOS for iPhone BYOD users.", targetApps: "All managed apps provides the broadest data protection coverage.", preventBackup: "Backup restriction stops corporate data from leaving via iCloud or iTunes.", cutCopyPaste: "Policy managed apps allows productivity within the managed app ecosystem but blocks data leakage to personal apps.", pin: "App-level PIN adds a control layer independent of the device PIN.", pinType: "Numeric PIN is the standard requirement.", group: "Assign to All Users — the policy targets apps on their personal devices." }
+    },
+    success: "iOS BYOD devices now have MAM app protection: corporate data can't be backed up, pasted into personal apps, and a PIN is required to access managed apps — no device enrollment needed."
+  },
+  {
+    id: "sim-settingscatalog", domainId: "maintain", console: "Microsoft Intune admin center",
+    title: "Create a Settings Catalog configuration profile",
+    goal: "Create a Windows Settings Catalog profile that disables all removable storage (USB mass storage) and assigns it to All Windows Devices.",
+    brief: "Security policy prohibits USB mass storage on corporate Windows laptops. Use the modern, CSP-backed Settings Catalog — not legacy ADMX templates.",
+    nav: INTUNE_NAV, navId: "devices",
+    blade: { items: [
+      { id: "overview", label: "Overview" }, { id: "all", label: "All devices" },
+      { id: "enroll", label: "Enrollment" }, { id: "config", label: "Configuration" },
+      { id: "compliance", label: "Compliance" }, { id: "scripts", label: "Scripts and remediations" }
+    ], correctItemId: "config", listTitle: "Configuration profiles", createLabel: "Create profile" },
+    wizard: {
+      tabs: [
+        { id: "basics", label: "Basics", fields: [
+          { key: "platform", label: "Platform", type: "select", options: [{ value: "win", label: "Windows 10 and later" }, { value: "ios", label: "iOS/iPadOS" }, { value: "macos", label: "macOS" }], help: "Select the OS this profile targets." },
+          { key: "profileType", label: "Profile type", type: "select", options: [{ value: "catalog", label: "Settings catalog" }, { value: "templates", label: "Templates" }, { value: "custom", label: "Custom" }], help: "Settings catalog is the recommended modern approach — searchable, CSP-backed, fine-grained." },
+          { key: "name", label: "Profile name", type: "text", placeholder: "e.g. Win-Block-RemovableStorage" }
+        ]},
+        { id: "settings", label: "Configuration settings", fields: [
+          { key: "removableStorage", label: "Removable Storage — Deny all access", type: "toggle", help: "Found by searching 'removable storage' in the catalog. Blocks all USB mass storage devices via the RemovableStorage CSP." }
+        ]},
+        { id: "assign", label: "Assignments", fields: [
+          { key: "group", label: "Assign to group", type: "group", options: GROUPS }
+        ]}
+      ],
+      target: { platform: "win", profileType: "catalog", name: "*", removableStorage: true, group: "all-windows" },
+      explain: { platform: "Target Windows 10 and later.", profileType: "Settings catalog is the modern recommended profile type for new CSP-based policies — not ADMX Templates.", removableStorage: "The RemovableStorage > Deny All Access setting blocks USB mass storage without needing ADMX files.", group: "Assign to All Windows Devices." }
+    },
+    success: "A Settings Catalog profile now blocks all removable USB mass storage on Windows devices using the CSP-backed RemovableStorage policy."
+  },
+  {
+    id: "sim-antivirus", domainId: "protect", console: "Microsoft Intune admin center",
+    title: "Create an Endpoint Security Antivirus policy",
+    goal: "Create a Microsoft Defender Antivirus endpoint security policy with real-time protection, cloud-delivered protection, and behavior monitoring enabled, assigned to All Windows Devices.",
+    brief: "The security team wants a consistent AV baseline deployed through the Endpoint Security node — not a configuration profile — for cleaner reporting in the Security dashboard.",
+    nav: INTUNE_NAV, navId: "endpoint",
+    blade: { items: [
+      { id: "overview", label: "Overview" }, { id: "av", label: "Antivirus" },
+      { id: "disk", label: "Disk encryption" }, { id: "firewall", label: "Firewall" },
+      { id: "asr", label: "Attack surface reduction" }, { id: "edr", label: "Endpoint detection and response" }
+    ], correctItemId: "av", listTitle: "Antivirus policies", createLabel: "Create policy" },
+    wizard: {
+      tabs: [
+        { id: "basics", label: "Basics", fields: [
+          { key: "platform", label: "Platform", type: "select", options: [{ value: "win", label: "Windows 10, Windows 11, and Windows Server" }, { value: "macos", label: "macOS" }], help: "Select the target OS." },
+          { key: "profile", label: "Profile", type: "select", options: [{ value: "defender", label: "Microsoft Defender Antivirus" }, { value: "exclusions", label: "Microsoft Defender Antivirus exclusions" }], help: "The Defender Antivirus profile controls core engine settings." },
+          { key: "name", label: "Policy name", type: "text", placeholder: "e.g. AV-Defender-Baseline" }
+        ]},
+        { id: "settings", label: "Configuration settings", fields: [
+          { key: "realtimeProtection", label: "Turn on real-time protection", type: "toggle", help: "Enables always-on file scanning — the foundational AV capability." },
+          { key: "cloudProtection", label: "Turn on cloud-delivered protection", type: "toggle", help: "Sends samples to Microsoft for rapid analysis of new and emerging threats." },
+          { key: "behaviorMonitoring", label: "Turn on behavior monitoring", type: "toggle", help: "Monitors running processes for suspicious patterns — catches fileless malware." }
+        ]},
+        { id: "assign", label: "Assignments", fields: [
+          { key: "group", label: "Assign to group", type: "group", options: GROUPS }
+        ]}
+      ],
+      target: { platform: "win", profile: "defender", name: "*", realtimeProtection: true, cloudProtection: true, behaviorMonitoring: true, group: "all-windows" },
+      explain: { platform: "Target Windows 10/11 devices.", profile: "The Microsoft Defender Antivirus profile controls the core AV engine settings.", realtimeProtection: "Real-time protection is the fundamental always-on detection capability.", cloudProtection: "Cloud protection dramatically accelerates detection of new and zero-day threats.", behaviorMonitoring: "Behavior monitoring catches threats that evade traditional signature scanning.", group: "Assign to All Windows Devices." }
+    },
+    success: "A Defender Antivirus endpoint security policy now enforces real-time protection, cloud-delivered protection, and behavior monitoring across all Windows devices."
+  },
+  {
+    id: "sim-m365apps", domainId: "apps", console: "Microsoft Intune admin center",
+    title: "Deploy Microsoft 365 Apps for Windows",
+    goal: "Add Microsoft 365 Apps for Windows 10 and later in the Monthly Enterprise Channel (64-bit) and assign it as Required to All Windows Devices.",
+    brief: "The org is migrating from locally installed Office to cloud-managed M365 Apps. You need a predictable monthly update cadence with automatic deployment.",
+    nav: INTUNE_NAV, navId: "apps",
+    blade: { items: [
+      { id: "all", label: "All apps" }, { id: "windows", label: "Windows" },
+      { id: "ios", label: "iOS/iPadOS" }, { id: "macos", label: "macOS" },
+      { id: "config", label: "App configuration policies" }, { id: "protection", label: "App protection policies" }
+    ], correctItemId: "windows", listTitle: "Windows apps", createLabel: "Add" },
+    wizard: {
+      tabs: [
+        { id: "type", label: "App type", fields: [
+          { key: "type", label: "Select app type", type: "select", options: [{ value: "m365", label: "Microsoft 365 Apps for Windows 10 and later" }, { value: "win32", label: "Windows app (Win32)" }, { value: "store", label: "Microsoft Store app (new)" }], help: "M365 Apps is a first-party integrated type — no .intunewin packaging required." }
+        ]},
+        { id: "appsuite", label: "App suite settings", fields: [
+          { key: "channel", label: "Update channel", type: "select", options: [{ value: "mec", label: "Monthly Enterprise Channel" }, { value: "current", label: "Current Channel" }, { value: "sac", label: "Semi-Annual Enterprise Channel" }], help: "Monthly Enterprise Channel ships feature updates once per month on a predictable, tested schedule." },
+          { key: "arch", label: "Architecture", type: "select", options: [{ value: "64", label: "64-bit" }, { value: "32", label: "32-bit" }], help: "64-bit is standard for modern corporate hardware." }
+        ]},
+        { id: "assign", label: "Assignments", fields: [
+          { key: "assignType", label: "Assignment type", type: "select", options: [{ value: "required", label: "Required" }, { value: "available", label: "Available for enrolled devices" }], help: "Required installs automatically on all targeted devices with no user action." },
+          { key: "group", label: "Assign to group", type: "group", options: GROUPS }
+        ]}
+      ],
+      target: { type: "m365", channel: "mec", arch: "64", assignType: "required", group: "all-windows" },
+      explain: { type: "Microsoft 365 Apps has its own native Intune app type — no packaging or Content Prep Tool needed.", channel: "Monthly Enterprise Channel delivers feature updates once a month on a predictable, Microsoft-validated schedule.", arch: "64-bit is correct for modern corporate devices.", assignType: "Required pushes the install automatically — no user action needed from Company Portal.", group: "Assign to All Windows Devices." }
+    },
+    success: "Microsoft 365 Apps is now deploying in the Monthly Enterprise Channel (64-bit) as a Required assignment, installing automatically on all Windows devices."
   }
 ];
 
