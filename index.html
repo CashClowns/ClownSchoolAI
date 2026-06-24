@@ -1552,7 +1552,7 @@ Generate one high-quality MD-102 exam question.`;
   const contentPad = desktop ? "30px 40px 64px" : "20px 16px calc(112px + env(safe-area-inset-bottom))";
 
   return (
-    React.createElement('div', { style: { minHeight: "100dvh", background: C.bg, color: C.textPrimary, fontFamily: "'Manrope',system-ui,sans-serif", paddingBottom: 0, paddingLeft: desktop ? 250 : 0, position: "relative", overflow: "hidden", "--bhi": C.borderHi, backgroundImage: "url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E")", backgroundRepeat: "repeat", backgroundSize: "200px 200px" },}
+    React.createElement('div', { style: { minHeight: "100dvh", background: C.bg, color: C.textPrimary, fontFamily: "'Manrope',system-ui,sans-serif", paddingBottom: 0, paddingLeft: desktop ? 250 : 0, position: "relative", overflow: "hidden", "--bhi": C.borderHi,  },}
       , React.createElement('style', null, CSS)
 
       /* Live generative backdrop (canvas) */
@@ -1718,7 +1718,7 @@ Generate one high-quality MD-102 exam question.`;
             )
           );
 
-          const smartReview = React.createElement('button', { key: "sr", className: "md-btn iridescent", onClick: () => { setView("review"); SFX.tab(); }, style: { "--ibg": "rgba(255,45,120,0.08)", width: "100%", display: "flex", alignItems: "center", gap: 14, padding: 18, borderRadius: 18, border: "none", cursor: "pointer", textAlign: "left", background: "linear-gradient(120deg,#FF2D78,#FF6B5A,#FFB200)", color: "#0C0E15", boxShadow: "0 16px 48px rgba(255,45,120,0.45), 0 0 0 1px rgba(255,255,255,0.1)" },}
+          const smartReview = React.createElement('button', { key: "sr", className: "md-btn", onClick: () => { setView("review"); SFX.tab(); }, style: { width: "100%", display: "flex", alignItems: "center", gap: 14, padding: 18, borderRadius: 18, border: "none", cursor: "pointer", textAlign: "left", background: "linear-gradient(120deg,#FF2D78,#FF6B5A,#FFB200)", color: "#0C0E15", boxShadow: "0 16px 48px rgba(255,45,120,0.45), 0 0 0 1px rgba(255,255,255,0.1)" },}
             , React.createElement('div', { style: { width: 46, height: 46, borderRadius: 14, background: "rgba(12,14,21,0.16)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },}
               , React.createElement(Sparkles, { size: 22, color: "#0C0E15",} )
             )
